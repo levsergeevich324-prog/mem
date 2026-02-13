@@ -59,7 +59,34 @@ const defaults = {
   video: "https://github.com/levsergeevich324-prog/mem/raw/main/video.mp4"
 };
 
-// Устанавливаем контент
+// ===== ФУНКЦИЯ ДЛЯ НАСТРОЙКИ ВИДЕО =====
+function setupVideo(videoElement) {
+  if (!videoElement) return;
+  
+  // Устанавливаем все необходимые атрибуты для автовоспроизведения и зацикливания
+  videoElement.muted = true;      // обязательно для автовоспроизведения
+  videoElement.loop = true;       // зацикливание
+  videoElement.autoplay = true;   // автовоспроизведение
+  videoElement.playsInline = true; // для мобильных устройств
+  videoElement.preload = 'auto';   // предзагрузка
+  
+  // Пытаемся воспроизвести видео
+  const playPromise = videoElement.play();
+  
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        console.log('Видео успешно воспроизводится');
+      })
+      .catch(error => {
+        console.log('Автовоспроизведение не удалось:', error);
+        // Если автовоспроизведение не сработало, показываем контролы
+        videoElement.controls = true;
+      });
+  }
+}
+
+// ===== УСТАНОВКА КОНТЕНТА =====
 function setContent() {
   const nameEl = document.getElementById('name');
   const datesEl = document.getElementById('dates');
@@ -67,21 +94,83 @@ function setContent() {
   const photoEl = document.getElementById('photo');
   const videoEl = document.getElementById('video');
   
+  // Устанавливаем текстовый контент
   if (nameEl) nameEl.textContent = defaults.name;
   if (datesEl) datesEl.textContent = defaults.dates;
   if (bioEl) bioEl.innerHTML = defaults.bio;
-  if (photoEl) photoEl.src = defaults.photo;
+  
+  // Устанавливаем фото
+  if (photoEl) {
+    photoEl.src = defaults.photo;
+    photoEl.onerror = function() {
+      console.log('Ошибка загрузки фото');
+      this.src = 'https://via.placeholder.com/120x120?text=Photo';
+    };
+  }
 
+  // Настраиваем видео
   if (videoEl) {
+    // Обновляем источник видео
     const sourceEl = videoEl.querySelector('source');
     if (sourceEl) {
       sourceEl.src = defaults.video;
-      videoEl.load();
     }
+    
+    // Перезагружаем видео с новым источником
+    videoEl.load();
+    
+    // Настраиваем автовоспроизведение и зацикливание
+    setupVideo(videoEl);
+    
+    // Обработка ошибок видео
+    videoEl.onerror = function() {
+      console.log('Ошибка загрузки видео');
+      // Показываем сообщение об ошибке
+      const wrapper = this.closest('.video-wrapper');
+      if (wrapper) {
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'video-error';
+        errorMsg.innerHTML = 'Не удалось загрузить видео';
+        errorMsg.style.cssText = `
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: #fff;
+          background: rgba(0,0,0,0.7);
+          padding: 10px 20px;
+          border-radius: 8px;
+          font-family: 'Cormorant Garamond', serif;
+        `;
+        wrapper.style.position = 'relative';
+        wrapper.appendChild(errorMsg);
+      }
+    };
   }
 }
 
-// Пересоздаем звезды при изменении размера окна
+// ===== ПРОВЕРКА ЗАГРУЗКИ ВСЕХ РЕСУРСОВ =====
+function checkResources() {
+  const videoEl = document.getElementById('video');
+  
+  // Дополнительная проверка для видео
+  if (videoEl) {
+    // Если видео уже загружено, но не играет
+    if (videoEl.readyState >= 2) { // HAVE_CURRENT_DATA или больше
+      setupVideo(videoEl);
+    }
+    
+    // Слушаем событие загрузки видео
+    videoEl.addEventListener('loadeddata', function() {
+      console.log('Видео загружено');
+      setupVideo(this);
+    });
+  }
+}
+
+// ===== ОБРАБОТЧИКИ СОБЫТИЙ =====
+
+// Пересоздаем звезды при изменении размера окна (с debounce)
 let resizeTimer;
 function handleResize() {
   clearTimeout(resizeTimer);
@@ -90,14 +179,79 @@ function handleResize() {
   }, 200);
 }
 
-// Запуск
+// Обработчик видимости страницы (для продолжения воспроизведения)
+function handleVisibilityChange() {
+  const videoEl = document.getElementById('video');
+  if (!videoEl) return;
+  
+  if (!document.hidden) {
+    // Страница стала видимой - пробуем воспроизвести видео
+    setupVideo(videoEl);
+  }
+}
+
+// ===== ИНИЦИАЛИЗАЦИЯ =====
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM загружен, инициализация...');
+  
+  // Устанавливаем контент
   setContent();
+  
+  // Создаем звезды
   createStars();
+  
+  // Проверяем ресурсы
+  setTimeout(checkResources, 500); // Небольшая задержка для полной загрузки DOM
+  
+  // Слушаем изменение видимости страницы
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+  // Слушаем изменение размера окна
   window.addEventListener('resize', handleResize);
+  
+  // Слушаем загрузку страницы
+  window.addEventListener('load', function() {
+    console.log('Страница полностью загружена');
+    checkResources();
+  });
 });
 
-// Очистка
+// ===== ОЧИСТКА ПРИ ВЫХОДЕ =====
 window.addEventListener('beforeunload', function() {
+  // Удаляем обработчики событий
   window.removeEventListener('resize', handleResize);
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+  
+  // Останавливаем видео
+  const videoEl = document.getElementById('video');
+  if (videoEl) {
+    videoEl.pause();
+    videoEl.removeAttribute('src');
+    videoEl.load();
+  }
 });
+
+// ===== ДОПОЛНИТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ =====
+// Некоторые мобильные браузеры требуют взаимодействия с пользователем
+function enableMobilePlayback() {
+  const videoEl = document.getElementById('video');
+  if (!videoEl) return;
+  
+  // Если видео не играет после загрузки страницы на мобильном
+  if (videoEl.paused) {
+    // Добавляем обработчик первого касания
+    const enablePlayback = function() {
+      setupVideo(videoEl);
+      document.removeEventListener('touchstart', enablePlayback);
+      document.removeEventListener('click', enablePlayback);
+    };
+    
+    document.addEventListener('touchstart', enablePlayback);
+    document.addEventListener('click', enablePlayback);
+  }
+}
+
+// Запускаем для мобильных устройств
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  document.addEventListener('DOMContentLoaded', enableMobilePlayback);
+}
