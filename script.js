@@ -1,8 +1,7 @@
-// ===== ГЕНЕРАЦИЯ ЗВЁЗДНОГО НЕБА (ТОЛЬКО ЗВЁЗДЫ, БЕЗ КОМЕТ) =====
+// ===== ГЕНЕРАЦИЯ ЗВЁЗДНОГО НЕБА =====
 function createStars() {
   const starsContainer = document.getElementById('stars');
   
-  // Обычные звёзды — 250 штук, мерцают
   for (let i = 0; i < 250; i++) {
     const star = document.createElement('div');
     star.className = 'star';
@@ -22,7 +21,6 @@ function createStars() {
 const defaults = {
   name: "Карелина Миля Илларионовна",
   dates: "1938 — 2013",
-  tagline: "Ты там где живёт только Бог.... Ты там где кончаются звёзды...",
   bio: "<p>Родилась в 1938 году. Её жизнь пришлась на непростые годы, но она сохранила доброту, достоинство и умение радоваться простым вещам. Работала, растила детей, стала опорой для внуков, буквально жила ради них работая даже на пенсии. Её помнят как человека с тихим голосом, мудрым взглядом и открытым сердцем.</p>",
   photo: "photo.jpg",
   video: "https://github.com/levsergeevich324-prog/mem/raw/main/video.mp4"
@@ -31,7 +29,6 @@ const defaults = {
 // Устанавливаем контент
 document.getElementById('name').textContent = defaults.name;
 document.getElementById('dates').textContent = defaults.dates;
-document.getElementById('tagline').textContent = defaults.tagline;
 document.getElementById('bio').innerHTML = defaults.bio;
 document.getElementById('photo').src = defaults.photo;
 
