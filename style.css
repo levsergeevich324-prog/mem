@@ -184,7 +184,7 @@ h1 {
   height: auto;
   min-width: 100%;
   min-height: 100%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -60%);
   display: block;
   background: #000000;
   object-fit: cover;
