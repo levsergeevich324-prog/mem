@@ -483,158 +483,179 @@
       max-height: 450px;
     }
 
-    /* ===== СТАРАЯ БУМАГА ===== */
+    /* ===== СТАРАЯ БУМАГА (исправленная) ===== */
     .paper-background {
       position: relative;
       background: #e8d9c0;
+      /* Естественная текстура бумаги */
       background-image: 
-        linear-gradient(45deg, rgba(139, 69, 19, 0.05) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(139, 69, 19, 0.05) 25%, transparent 25%);
-      background-size: 30px 30px;
+        radial-gradient(circle at 10% 20%, rgba(100, 50, 20, 0.08) 0%, transparent 30%),
+        radial-gradient(circle at 90% 70%, rgba(80, 40, 15, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 30% 80%, rgba(120, 70, 30, 0.05) 0%, transparent 35%),
+        radial-gradient(circle at 70% 30%, rgba(90, 45, 20, 0.05) 0%, transparent 45%);
       border-radius: 30px;
       padding: 30px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 50px rgba(139, 69, 19, 0.2);
-      border: 2px solid #8b6b4d;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 50px rgba(100, 50, 20, 0.3);
+      border: 2px solid #6b4b2d;
       min-height: 500px;
+      z-index: 1;
     }
 
-    /* ПОТЕРТОСТИ */
+    /* ПОТЕРТОСТИ - ИСПРАВЛЕНО позиционирование */
     .wear-mark-1 {
       position: absolute;
-      top: 50px;
-      left: 80px;
+      top: 30px;
+      left: 50px;
       width: 200px;
       height: 100px;
-      background: radial-gradient(ellipse, rgba(100, 60, 30, 0.2) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(100, 60, 30, 0.25) 0%, transparent 70%);
       border-radius: 50%;
-      transform: rotate(-10deg);
-      filter: blur(8px);
+      transform: rotate(-5deg);
+      filter: blur(10px);
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
     .wear-mark-2 {
       position: absolute;
-      bottom: 100px;
-      right: 60px;
+      bottom: 50px;
+      right: 40px;
       width: 250px;
-      height: 120px;
-      background: radial-gradient(ellipse, rgba(80, 40, 20, 0.15) 0%, transparent 70%);
+      height: 130px;
+      background: radial-gradient(ellipse, rgba(80, 40, 20, 0.2) 0%, transparent 70%);
       border-radius: 60% 40% 50% 50% / 30% 60% 40% 70%;
-      transform: rotate(15deg);
-      filter: blur(10px);
+      transform: rotate(10deg);
+      filter: blur(12px);
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
     .wear-mark-3 {
       position: absolute;
-      top: 300px;
-      left: 200px;
+      top: 250px;
+      left: 150px;
       width: 180px;
-      height: 90px;
-      background: radial-gradient(circle, rgba(120, 70, 30, 0.1) 0%, transparent 70%);
+      height: 100px;
+      background: radial-gradient(circle, rgba(120, 70, 30, 0.15) 0%, transparent 70%);
       border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
-      transform: rotate(25deg);
-      filter: blur(7px);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* КЛЯКСЫ */
-    .ink-blot-1 {
-      position: absolute;
-      top: 120px;
-      right: 150px;
-      width: 60px;
-      height: 50px;
-      background: rgba(50, 30, 15, 0.3);
-      border-radius: 70% 30% 60% 40% / 40% 60% 40% 60%;
-      transform: rotate(20deg);
-      filter: blur(3px);
-      box-shadow: 0 0 15px rgba(50, 30, 15, 0.2);
+      transform: rotate(15deg);
+      filter: blur(9px);
       pointer-events: none;
       z-index: 2;
+    }
+
+    /* КЛЯКСЫ - ИСПРАВЛЕНО позиционирование */
+    .ink-blot-1 {
+      position: absolute;
+      top: 80px;
+      right: 80px;
+      width: 60px;
+      height: 45px;
+      background: rgba(50, 30, 15, 0.35);
+      border-radius: 70% 30% 60% 40% / 40% 60% 40% 60%;
+      transform: rotate(20deg);
+      filter: blur(4px);
+      box-shadow: 0 0 15px rgba(50, 30, 15, 0.2);
+      pointer-events: none;
+      z-index: 3;
     }
 
     .ink-blot-2 {
       position: absolute;
-      bottom: 200px;
-      left: 150px;
-      width: 45px;
+      bottom: 150px;
+      left: 100px;
+      width: 50px;
       height: 40px;
-      background: rgba(40, 25, 10, 0.35);
+      background: rgba(40, 25, 10, 0.4);
       border-radius: 50% 30% 70% 30% / 40% 50% 50% 60%;
-      transform: rotate(-15deg);
-      filter: blur(4px);
+      transform: rotate(-10deg);
+      filter: blur(5px);
       box-shadow: 0 0 10px rgba(40, 25, 10, 0.2);
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
     }
 
     .ink-blot-3 {
       position: absolute;
-      top: 400px;
-      right: 100px;
+      top: 350px;
+      right: 120px;
       width: 55px;
       height: 45px;
-      background: rgba(60, 35, 15, 0.25);
+      background: rgba(60, 35, 15, 0.3);
       border-radius: 60% 40% 50% 50% / 30% 50% 50% 70%;
-      transform: rotate(45deg);
-      filter: blur(5px);
+      transform: rotate(30deg);
+      filter: blur(4px);
       box-shadow: 0 0 12px rgba(60, 35, 15, 0.15);
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
     }
 
-    /* СЛЕДЫ ОТ ВОДЫ */
+    /* СЛЕДЫ ОТ ВОДЫ - ИСПРАВЛЕНО позиционирование */
     .water-stain-1 {
       position: absolute;
-      top: 200px;
-      left: 300px;
-      width: 150px;
-      height: 80px;
-      background: radial-gradient(ellipse, rgba(140, 100, 60, 0.15) 0%, transparent 80%);
+      top: 150px;
+      left: 200px;
+      width: 180px;
+      height: 90px;
+      background: radial-gradient(ellipse, rgba(140, 100, 60, 0.2) 0%, transparent 80%);
       border-radius: 50% 40% 60% 40% / 40% 60% 40% 60%;
-      filter: blur(12px);
+      filter: blur(15px);
       transform: rotate(-5deg);
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
     }
 
     .water-stain-2 {
       position: absolute;
-      bottom: 300px;
-      right: 200px;
-      width: 180px;
-      height: 90px;
-      background: radial-gradient(circle, rgba(120, 80, 40, 0.1) 0%, transparent 80%);
+      bottom: 200px;
+      right: 150px;
+      width: 200px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(120, 80, 40, 0.15) 0%, transparent 80%);
       border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
-      filter: blur(15px);
-      transform: rotate(10deg);
+      filter: blur(18px);
+      transform: rotate(8deg);
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
     }
 
-    /* ПОРВАННЫЙ КРАЙ */
+    /* ПОРВАННЫЙ КРАЙ - ИСПРАВЛЕНО */
     .tear-edge {
       position: absolute;
       top: -5px;
       left: 0;
       width: 100%;
-      height: 20px;
+      height: 25px;
       background: linear-gradient(135deg, 
-        transparent 20%, 
-        rgba(100, 50, 20, 0.2) 30%,
-        transparent 40%,
-        rgba(80, 40, 15, 0.15) 50%,
-        transparent 60%,
-        rgba(90, 45, 20, 0.1) 70%,
-        transparent 80%
+        transparent 15%, 
+        rgba(100, 50, 20, 0.25) 25%,
+        transparent 35%,
+        rgba(80, 40, 15, 0.2) 45%,
+        transparent 55%,
+        rgba(90, 45, 20, 0.15) 65%,
+        transparent 75%,
+        rgba(70, 35, 10, 0.1) 85%,
+        transparent 95%
       );
       filter: blur(3px);
       pointer-events: none;
       z-index: 5;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+    }
+
+    /* Затемнение по краям для эффекта пергамента */
+    .paper-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      box-shadow: inset 0 0 50px rgba(60, 30, 10, 0.3);
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: 4;
     }
 
     /* КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ */
@@ -678,7 +699,7 @@
     }
 
     .hidden-content .timeline-content {
-      background: rgba(210, 180, 140, 0.7);
+      background: rgba(210, 180, 140, 0.8);
       border-color: #6b4b2d;
       color: #1a0e05;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -694,7 +715,7 @@
     }
 
     .hidden-content .bio {
-      background: rgba(200, 170, 130, 0.6);
+      background: rgba(200, 170, 130, 0.7);
       border-left-color: #6b4b2d;
     }
 
@@ -704,7 +725,7 @@
     }
 
     .hidden-content .coordinates-section {
-      background: rgba(190, 160, 120, 0.6);
+      background: rgba(190, 160, 120, 0.7);
       border-color: #6b4b2d;
     }
 
@@ -728,7 +749,7 @@
     }
 
     .hidden-content .qr-section {
-      background: rgba(180, 150, 110, 0.7);
+      background: rgba(180, 150, 110, 0.8);
       border-color: #6b4b2d;
     }
 
@@ -747,7 +768,7 @@
     }
 
     .hidden-content .memorial-message {
-      background: rgba(160, 120, 80, 0.3);
+      background: rgba(160, 120, 80, 0.4);
       border-left-color: #6b4b2d;
       border-right-color: #6b4b2d;
     }
@@ -771,12 +792,12 @@
     .hidden-content .coordinates-button {
       color: #1a0e05;
       font-weight: 600;
-      background: rgba(140, 100, 60, 0.3);
+      background: rgba(140, 100, 60, 0.4);
       border: 1px solid #6b4b2d;
     }
 
     .hidden-content .coordinates-button:hover {
-      background: rgba(160, 120, 80, 0.4);
+      background: rgba(160, 120, 80, 0.5);
     }
 
     /* ХРОНОЛОГИЯ ЖИЗНИ */
@@ -1025,7 +1046,7 @@
     .memorial-message {
       text-align: center;
       padding: 25px;
-      background: rgba(160, 120, 80, 0.3);
+      background: rgba(160, 120, 80, 0.4);
       border-radius: 20px;
       border-left: 4px solid #6b4b2d;
       border-right: 4px solid #6b4b2d;
@@ -1089,6 +1110,12 @@
       .timeline-text { font-size: 16px; }
       .coordinates-section { flex-direction: column; text-align: center; }
       .paper-background { padding: 15px; }
+      
+      .wear-mark-1, .wear-mark-2, .wear-mark-3,
+      .ink-blot-1, .ink-blot-2, .ink-blot-3,
+      .water-stain-1, .water-stain-2 {
+        opacity: 0.3;
+      }
     }
 
     /* Аудио плеер (скрыт) */
