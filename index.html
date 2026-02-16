@@ -231,7 +231,7 @@
       text-align: center;
     }
 
-    /* Кнопка БИОГРАФИЯ (изменено название) */
+    /* Кнопка БИОГРАФИЯ */
     .candle-button {
       background: linear-gradient(135deg, rgba(40, 25, 15, 0.9) 0%, rgba(60, 30, 10, 0.9) 100%);
       backdrop-filter: blur(5px);
@@ -314,7 +314,8 @@
       padding: 0;
     }
 
-    .card {
+    /* card закомментирован */
+    /* .card {
       background: rgba(10, 14, 19, 0.8);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
@@ -325,7 +326,7 @@
       position: relative;
       z-index: 25;
       width: 100%;
-    }
+    } */
 
     /* ШАПКА С ФОТО (видна при заходе) */
     .main-header {
@@ -452,6 +453,29 @@
       margin: 0 5px;
     }
 
+    /* ВИДЕО НА НАЧАЛЬНОЙ СТРАНИЦЕ */
+    .video-section {
+      margin: 40px 0;
+    }
+
+    .video-wrapper {
+      background: #000000;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid #c09b5e;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .video-wrapper video {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 450px;
+    }
+
     /* ===== КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ ===== */
     .hidden-content {
       opacity: 0;
@@ -465,7 +489,6 @@
     }
 
     .hidden-content .timeline-section,
-    .hidden-content .video-section,
     .hidden-content .bio,
     .hidden-content .info-row,
     .hidden-content footer {
@@ -474,10 +497,9 @@
     }
 
     .hidden-content.visible .timeline-section { animation-delay: 0.3s; }
-    .hidden-content.visible .video-section { animation-delay: 0.6s; }
-    .hidden-content.visible .bio { animation-delay: 0.9s; }
-    .hidden-content.visible .info-row { animation-delay: 1.2s; }
-    .hidden-content.visible footer { animation-delay: 1.5s; }
+    .hidden-content.visible .bio { animation-delay: 0.6s; }
+    .hidden-content.visible .info-row { animation-delay: 0.9s; }
+    .hidden-content.visible footer { animation-delay: 1.2s; }
 
     /* ХРОНОЛОГИЯ ЖИЗНИ */
     .timeline-section {
@@ -568,30 +590,6 @@
       border-radius: 50%;
       box-shadow: 0 0 20px #ffd700;
       z-index: 10;
-    }
-
-    /* ВИДЕО */
-    .video-section {
-      margin: 50px 0;
-      scroll-margin-top: 30px;
-    }
-
-    .video-wrapper {
-      background: #000000;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 2px solid #c09b5e;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .video-wrapper video {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 450px;
     }
 
     /* БИОГРАФИЯ */
@@ -815,7 +813,7 @@
     }
 
     @media screen and (max-width: 480px) {
-      .card { padding: 20px 15px; }
+      /* .card { padding: 20px 15px; } */
       .main-header { flex-direction: column; text-align: center; }
       .avatar { width: 130px; height: 130px; flex: 0 0 130px; }
       .candle-button { padding: 10px 20px; }
@@ -850,7 +848,8 @@
   </audio>
 
   <div class="wrap">
-    <div class="card">
+    <!-- card закомментирован -->
+    <!-- <div class="card"> -->
       
       <!-- ШАПКА С КНОПКОЙ И СЧЕТЧИКОМ (видна при заходе) -->
       <div class="header-top" id="headerTop">
@@ -859,7 +858,7 @@
           <span class="counter-text" id="counterText">0</span>
         </div>
         
-        <!-- Кнопка БИОГРАФИЯ (переименована) -->
+        <!-- Кнопка БИОГРАФИЯ -->
         <button class="candle-button" id="candleButton">
           <span class="candle-button-icon">📖</span>
           <span class="candle-button-text">Биография</span>
@@ -883,6 +882,22 @@
           </div>
         </div>
       </header>
+
+      <!-- ВИДЕО НА НАЧАЛЬНОЙ СТРАНИЦЕ (видно сразу) -->
+      <section class="video-section">
+        <div class="video-wrapper">
+          <video id="videoPlayer" 
+                 controls 
+                 playsinline 
+                 preload="auto"
+                 muted 
+                 autoplay 
+                 loop>
+            <source src="https://github.com/levsergeevich324-prog/mem/raw/main/video.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
+      </section>
 
       <!-- КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ -->
       <div class="hidden-content" id="hiddenContent">
@@ -957,22 +972,6 @@
           </div>
         </section>
 
-        <!-- ВИДЕО -->
-        <section class="video-section">
-          <div class="video-wrapper">
-            <video id="videoPlayer" 
-                   controls 
-                   playsinline 
-                   preload="auto"
-                   muted 
-                   autoplay 
-                   loop>
-              <source src="https://github.com/levsergeevich324-prog/mem/raw/main/video.mp4" type="video/mp4">
-              Ваш браузер не поддерживает видео.
-            </video>
-          </div>
-        </section>
-
         <!-- БИОГРАФИЯ С ПЕЧАТАЮЩИМСЯ ТЕКСТОМ -->
         <section class="bio" id="bio">
           <p id="typing-text"></p>
@@ -1025,7 +1024,7 @@
         
       </div>
 
-    </div>
+    <!-- </div>  card закомментирован -->
   </div>
 
   <script>
@@ -1092,6 +1091,25 @@
       
       if (photoEl) {
         photoEl.src = defaults.photo;
+      }
+    }
+
+    // Настройка видео
+    function setupVideo() {
+      const videoElement = document.getElementById('videoPlayer');
+      if (!videoElement) return;
+      
+      videoElement.muted = true;
+      videoElement.loop = true;
+      videoElement.autoplay = true;
+      videoElement.playsInline = true;
+      videoElement.preload = 'auto';
+      
+      const playPromise = videoElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log('Автовоспроизведение видео не удалось:', error);
+        });
       }
     }
 
@@ -1331,6 +1349,7 @@
       setContent();
       createStars();
       updateDaysCounter();
+      setupVideo(); // Запускаем видео
       initCandleFeature();
       initDateAnimation();
       initProtection();
