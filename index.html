@@ -17,7 +17,30 @@
       50% { opacity: 1; }
     }
 
-    /* Эффект свечи */
+    /* Эффект свечи - АНИМИРОВАННОЕ ПЛАМЯ */
+    @keyframes flameFlicker {
+      0%, 100% { 
+        transform: scale(1) translateY(0);
+        opacity: 0.9;
+        box-shadow: 0 0 20px rgba(255, 150, 50, 0.8), 0 0 40px rgba(255, 100, 0, 0.4);
+      }
+      25% { 
+        transform: scale(1.1) translateY(-2px);
+        opacity: 1;
+        box-shadow: 0 0 30px rgba(255, 200, 50, 1), 0 0 60px rgba(255, 150, 0, 0.6);
+      }
+      50% { 
+        transform: scale(0.95) translateY(2px);
+        opacity: 0.8;
+        box-shadow: 0 0 15px rgba(255, 100, 0, 0.9), 0 0 30px rgba(255, 50, 0, 0.5);
+      }
+      75% { 
+        transform: scale(1.05) translateY(-1px);
+        opacity: 0.95;
+        box-shadow: 0 0 25px rgba(255, 180, 50, 1), 0 0 50px rgba(255, 120, 0, 0.5);
+      }
+    }
+
     @keyframes candleFlicker {
       0%, 100% { 
         opacity: 0.3;
@@ -81,6 +104,25 @@
       }
     }
 
+    /* Эффект старой бумаги */
+    @keyframes paperReveal {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+        background: rgba(210, 180, 140, 0.1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(1.02);
+        background: rgba(210, 180, 140, 0.5);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        background: rgba(210, 180, 140, 0.15);
+      }
+    }
+
     /* Эффект печатающегося текста */
     @keyframes blink {
       0%, 100% { opacity: 1; }
@@ -91,7 +133,7 @@
       display: inline-block;
       width: 3px;
       height: 20px;
-      background-color: #ffd700;
+      background-color: #8b6b4d;
       margin-left: 5px;
       animation: blink 1s infinite;
       vertical-align: middle;
@@ -113,7 +155,7 @@
       padding: 0;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
       background: #0a0c12;
-      color: #eaeef2;
+      color: #2c1e0e;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -144,7 +186,7 @@
       z-index: 1;
     }
 
-    /* Эффект свечи */
+    /* Эффект свечи с АНИМИРОВАННЫМ ПЛАМЕНЕМ */
     .candle-effect {
       position: fixed;
       top: 0;
@@ -161,6 +203,51 @@
     .candle-effect.active {
       opacity: 1;
       animation: candleFlicker 3s infinite ease-in-out;
+    }
+
+    /* АНИМИРОВАННОЕ ПЛАМЯ СВЕЧИ */
+    .candle-flame {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 80px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      filter: drop-shadow(0 0 20px rgba(255, 100, 0, 0.8));
+    }
+
+    .candle-flame.active {
+      opacity: 1;
+    }
+
+    .candle-flame::before {
+      content: '🔥';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 70px;
+      animation: flameFlicker 0.5s infinite ease-in-out;
+      filter: drop-shadow(0 0 15px #ffaa00);
+    }
+
+    .candle-flame::after {
+      content: '';
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 40px;
+      background: radial-gradient(circle, #ffaa00, #ff5500);
+      border-radius: 50%;
+      filter: blur(8px);
+      opacity: 0.7;
+      animation: flameFlicker 0.7s infinite ease-in-out reverse;
     }
 
     /* Забеливание */
@@ -191,6 +278,8 @@
       gap: 15px;
       opacity: 1;
       transition: opacity 2s ease;
+      position: relative;
+      z-index: 50;
     }
 
     .header-top.hidden {
@@ -325,6 +414,8 @@
       flex-wrap: wrap;
       opacity: 1;
       transition: opacity 2s ease;
+      position: relative;
+      z-index: 50;
     }
 
     .main-header.hidden {
@@ -443,6 +534,8 @@
     .video-section {
       margin: 40px 0;
       transition: opacity 2s ease, visibility 2s ease;
+      position: relative;
+      z-index: 50;
     }
 
     .video-section.hidden {
@@ -469,16 +562,56 @@
       max-height: 450px;
     }
 
-    /* ===== КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ ===== */
+    /* ===== КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ (СТАРАЯ БУМАГА) ===== */
     .hidden-content {
       opacity: 0;
       visibility: hidden;
       transition: opacity 2s ease, visibility 2s ease;
+      position: relative;
     }
 
     .hidden-content.visible {
       opacity: 1;
       visibility: visible;
+      animation: paperReveal 2s ease-out forwards;
+      background: rgba(210, 180, 140, 0.15);
+      border-radius: 30px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 50px rgba(139, 69, 19, 0.3);
+      border: 1px solid #8b6b4d;
+      position: relative;
+      backdrop-filter: blur(2px);
+    }
+
+    /* Эффект старой бумаги - текстура */
+    .hidden-content.visible::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(45deg, rgba(139, 69, 19, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(139, 69, 19, 0.1) 25%, transparent 25%);
+      background-size: 20px 20px;
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Эффект старой бумаги - края */
+    .hidden-content.visible::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.2), transparent 70%);
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: -1;
     }
 
     .hidden-content .timeline-section,
@@ -487,12 +620,75 @@
     .hidden-content footer {
       animation: fadeInUp 1.5s ease forwards;
       opacity: 0;
+      color: #2c1e0e;
     }
 
     .hidden-content.visible .timeline-section { animation-delay: 0.3s; }
     .hidden-content.visible .bio { animation-delay: 0.6s; }
     .hidden-content.visible .info-row { animation-delay: 0.9s; }
     .hidden-content.visible footer { animation-delay: 1.2s; }
+
+    /* Адаптация цветов под старую бумагу */
+    .hidden-content .timeline-title {
+      color: #5a3e1b;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .hidden-content .timeline-content {
+      background: rgba(200, 170, 130, 0.6);
+      border-color: #8b6b4d;
+      color: #2c1e0e;
+    }
+
+    .hidden-content .timeline-year {
+      color: #5a3e1b;
+    }
+
+    .hidden-content .bio {
+      background: rgba(200, 170, 130, 0.4);
+      border-left-color: #8b6b4d;
+    }
+
+    .hidden-content .bio p {
+      color: #2c1e0e;
+    }
+
+    .hidden-content .coordinates-section {
+      background: rgba(200, 170, 130, 0.4);
+      border-color: #8b6b4d;
+    }
+
+    .hidden-content .coordinates-title {
+      color: #5a3e1b;
+    }
+
+    .hidden-content .coord {
+      color: #2c1e0e;
+      text-shadow: 0 0 5px #8b6b4d;
+    }
+
+    .hidden-content .qr-section {
+      background: rgba(200, 170, 130, 0.5);
+      border-color: #8b6b4d;
+    }
+
+    .hidden-content .qr-label {
+      color: #5a3e1b;
+    }
+
+    .hidden-content footer {
+      border-top-color: #8b6b4d;
+    }
+
+    .hidden-content .memorial-message {
+      background: rgba(139, 69, 19, 0.2);
+      border-left-color: #8b6b4d;
+      border-right-color: #8b6b4d;
+    }
+
+    .hidden-content .message-text {
+      color: #5a3e1b;
+    }
 
     /* ХРОНОЛОГИЯ ЖИЗНИ */
     .timeline-section {
@@ -503,11 +699,8 @@
     .timeline-title {
       font-family: 'Playfair Display', serif;
       font-size: 32px;
-      color: #ffd700;
-      text-align: center;
       margin-bottom: 40px;
       letter-spacing: 2px;
-      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
     }
 
     .timeline {
@@ -522,9 +715,9 @@
       transform: translateX(-50%);
       width: 4px;
       height: 100%;
-      background: linear-gradient(to bottom, #ffd700, #c09b5e, #6a5a4a);
+      background: linear-gradient(to bottom, #8b6b4d, #5a3e1b, #2c1e0e);
       border-radius: 4px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      box-shadow: 0 0 20px rgba(139, 69, 19, 0.3);
     }
 
     .timeline-item {
@@ -542,33 +735,30 @@
 
     .timeline-content {
       width: 45%;
-      background: rgba(30, 35, 45, 0.7);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       padding: 20px;
       border-radius: 20px;
-      border: 1px solid #c09b5e;
+      border: 1px solid;
       box-shadow: 0 5px 20px rgba(0,0,0,0.3);
       transition: transform 0.3s ease;
     }
 
     .timeline-content:hover {
       transform: scale(1.02);
-      border-color: #ffd700;
-      box-shadow: 0 5px 30px rgba(255, 215, 0, 0.2);
+      border-color: #c09b5e;
+      box-shadow: 0 5px 30px rgba(139, 69, 19, 0.2);
     }
 
     .timeline-year {
       font-family: 'EB Garamond', serif;
       font-size: 28px;
       font-weight: 600;
-      color: #ffd700;
       margin-bottom: 10px;
     }
 
     .timeline-text {
       font-size: 18px;
-      color: #ecf0f5;
       line-height: 1.6;
     }
 
@@ -578,30 +768,27 @@
       transform: translateX(-50%);
       width: 20px;
       height: 20px;
-      background: #ffd700;
+      background: #8b6b4d;
       border: 3px solid #fff;
       border-radius: 50%;
-      box-shadow: 0 0 20px #ffd700;
+      box-shadow: 0 0 20px #8b6b4d;
       z-index: 10;
     }
 
     /* БИОГРАФИЯ */
     .bio {
       margin: 40px 0;
-      background: rgba(0, 0, 0, 0.2);
       padding: 30px;
       border-radius: 20px;
-      border-left: 3px solid #ffd700;
+      border-left: 3px solid;
       scroll-margin-top: 30px;
     }
 
     .bio p {
       font-size: clamp(16px, 2.2vw, 18px);
-      color: #ecf0f5;
       margin-bottom: 15px;
       text-align: left;
       line-height: 1.8;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
       white-space: pre-line;
       min-height: 200px;
     }
@@ -617,7 +804,6 @@
 
     /* КООРДИНАТЫ */
     .coordinates-section {
-      background: rgba(20, 35, 50, 0.6);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border-radius: 24px;
@@ -625,7 +811,7 @@
       display: flex;
       align-items: center;
       gap: 20px;
-      border: 2px solid #c09b5e;
+      border: 2px solid;
       flex-wrap: wrap;
     }
 
@@ -647,7 +833,6 @@
     .coordinates-title {
       font-family: 'Great Vibes', cursive;
       font-size: 28px;
-      color: #ffd700;
       margin-bottom: 15px;
     }
 
@@ -657,27 +842,23 @@
       border-radius: 50px;
       display: inline-flex;
       margin-bottom: 15px;
-      border: 1px solid #c09b5e;
+      border: 1px solid;
     }
 
     .coord {
       font-family: 'EB Garamond', monospace;
       font-size: 22px;
-      color: #ffffff;
       letter-spacing: 2px;
-      text-shadow: 0 0 10px #ffd700;
     }
 
     .coord-sep {
       font-size: 26px;
-      color: #ffd700;
       margin: 0 8px;
     }
 
     .caption-text {
       font-family: 'Great Vibes', cursive;
       font-size: 24px;
-      color: #e6d5b8;
       margin: 10px 0 15px;
     }
 
@@ -685,31 +866,34 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 215, 0, 0.2);
-      color: #ffd700;
+      background: rgba(139, 69, 19, 0.2);
+      color: #5a3e1b;
       text-decoration: none;
       padding: 12px 25px;
       border-radius: 40px;
       font-size: 18px;
-      border: 1px solid #c09b5e;
+      border: 1px solid #8b6b4d;
       transition: all 0.3s ease;
     }
 
     .coordinates-button:hover {
-      background: rgba(255, 215, 0, 0.3);
+      background: rgba(139, 69, 19, 0.3);
       transform: translateY(-3px);
-      box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+      box-shadow: 0 5px 20px rgba(139, 69, 19, 0.3);
+    }
+
+    .button-icon {
+      font-size: 16px;
     }
 
     /* QR СЕКЦИЯ */
     .qr-section {
-      background: rgba(20, 28, 36, 0.8);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border-radius: 24px;
       padding: 30px;
       text-align: center;
-      border: 2px solid #c09b5e;
+      border: 2px solid;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -719,7 +903,6 @@
     .qr-label {
       font-family: 'Great Vibes', cursive;
       font-size: 28px;
-      color: #ffd700;
       margin-bottom: 20px;
     }
 
@@ -728,7 +911,7 @@
       padding: 10px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      border: 1px solid #c09b5e;
+      border: 1px solid #8b6b4d;
     }
 
     .qr-frame img {
@@ -743,7 +926,7 @@
       margin-top: 15px;
       font-family: 'Cormorant Garamond', serif;
       font-size: 16px;
-      color: #c0d4e8;
+      color: #5a3e1b;
       font-style: italic;
     }
 
@@ -751,32 +934,31 @@
     footer {
       margin-top: 50px;
       padding-top: 30px;
-      border-top: 2px solid #c09b5e;
+      border-top: 2px solid;
       scroll-margin-top: 30px;
     }
 
     .memorial-message {
       text-align: center;
       padding: 25px;
-      background: rgba(70, 50, 30, 0.3);
+      background: rgba(139, 69, 19, 0.2);
       border-radius: 20px;
-      border-left: 4px solid #ffd700;
-      border-right: 4px solid #ffd700;
+      border-left: 4px solid;
+      border-right: 4px solid;
       margin-bottom: 25px;
     }
 
     .message-text {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(26px, 4vw, 32px);
-      color: #ffd700;
       line-height: 1.5;
-      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+      text-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .footer-bottom {
       display: flex;
       justify-content: space-between;
-      color: #b4cce3;
+      color: #5a3e1b;
       font-size: 16px;
       font-style: italic;
       flex-wrap: wrap;
@@ -787,7 +969,7 @@
       font-size: 14px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: #c09b5e;
+      color: #8b6b4d;
     }
 
     /* АДАПТАЦИЯ */
@@ -821,6 +1003,51 @@
     #bioAudio {
       display: none;
     }
+
+    /* Анимированное пламя свечи */
+    .candle-flame {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 80px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      filter: drop-shadow(0 0 20px rgba(255, 100, 0, 0.8));
+    }
+
+    .candle-flame.active {
+      opacity: 1;
+    }
+
+    .candle-flame::before {
+      content: '🔥';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 70px;
+      animation: flameFlicker 0.5s infinite ease-in-out;
+      filter: drop-shadow(0 0 15px #ffaa00);
+    }
+
+    .candle-flame::after {
+      content: '';
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 40px;
+      background: radial-gradient(circle, #ffaa00, #ff5500);
+      border-radius: 50%;
+      filter: blur(8px);
+      opacity: 0.7;
+      animation: flameFlicker 0.7s infinite ease-in-out reverse;
+    }
   </style>
 </head>
 <body>
@@ -829,6 +1056,9 @@
   
   <!-- ЭФФЕКТ СВЕЧИ -->
   <div class="candle-effect" id="candleEffect"></div>
+  
+  <!-- АНИМИРОВАННОЕ ПЛАМЯ СВЕЧИ -->
+  <div class="candle-flame" id="candleFlame"></div>
   
   <!-- ЗАБЕЛИВАНИЕ -->
   <div class="white-overlay" id="whiteOverlay"></div>
@@ -889,7 +1119,7 @@
         </div>
       </section>
 
-      <!-- КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ -->
+      <!-- КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ (СТАРАЯ БУМАГА) -->
       <div class="hidden-content" id="hiddenContent">
         
         <!-- ХРОНОЛОГИЯ ЖИЗНИ -->
@@ -1178,6 +1408,7 @@
     function initCandleFeature() {
       const candleButton = document.getElementById('candleButton');
       const candleEffect = document.getElementById('candleEffect');
+      const candleFlame = document.getElementById('candleFlame');
       const whiteOverlay = document.getElementById('whiteOverlay');
       const counterText = document.getElementById('counterText');
       const headerTop = document.getElementById('headerTop');
@@ -1198,6 +1429,7 @@
       
       if (candleCount > 0) {
         candleEffect.classList.add('active');
+        candleFlame.classList.add('active');
       }
       
       function createSparks() {
@@ -1227,8 +1459,9 @@
         counterText.textContent = candleCount;
         localStorage.setItem('candleCount', candleCount);
         
-        // Эффект свечи
+        // Эффект свечи и анимированное пламя
         candleEffect.classList.add('active');
+        candleFlame.classList.add('active');
         
         // Искорки
         createSparks();
@@ -1249,11 +1482,12 @@
           whiteOverlay.classList.add('active');
         }, 3000);
         
-        // 3. Появление остального контента через 8 секунд
+        // 3. Появление остального контента через 8 секунд (СТАРАЯ БУМАГА вместо звезд)
         setTimeout(() => {
           console.log('Showing hidden content');
           whiteOverlay.classList.remove('active');
           candleEffect.classList.remove('active');
+          candleFlame.classList.remove('active');
           
           // Показываем скрытый контент (видео НЕ появляется)
           hiddenContent.classList.add('visible');
@@ -1277,6 +1511,7 @@
         counterText.textContent = '0';
         localStorage.setItem('candleCount', '0');
         candleEffect.classList.remove('active');
+        candleFlame.classList.remove('active');
       });
     }
 
