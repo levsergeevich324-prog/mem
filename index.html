@@ -23,17 +23,8 @@
         opacity: 0.3;
         transform: scale(1);
       }
-      25% { 
-        opacity: 0.5;
-        transform: scale(1.02);
-      }
       50% { 
-        opacity: 0.8;
-        transform: scale(1.05);
-        box-shadow: 0 0 150px rgba(255, 150, 50, 0.6);
-      }
-      75% { 
-        opacity: 0.4;
+        opacity: 0.6;
         transform: scale(1.02);
       }
     }
@@ -81,6 +72,18 @@
       }
     }
 
+    /* Эффект старой бумаги */
+    @keyframes paperReveal {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
     /* Эффект печатающегося текста */
     @keyframes blink {
       0%, 100% { opacity: 1; }
@@ -91,7 +94,7 @@
       display: inline-block;
       width: 3px;
       height: 20px;
-      background-color: #ffd700;
+      background-color: #4a3a2a;
       margin-left: 5px;
       animation: blink 1s infinite;
       vertical-align: middle;
@@ -122,7 +125,7 @@
       line-height: 1.6;
     }
 
-    /* Звёздный фон */
+    /* Звёздный фон (виден только ДО забеливания) */
     .stars {
       position: fixed;
       top: 0;
@@ -132,6 +135,11 @@
       z-index: 0;
       pointer-events: none;
       background: radial-gradient(ellipse at bottom, #0a0c12 0%, #030405 100%);
+      transition: opacity 2s ease;
+    }
+
+    .stars.fade-out {
+      opacity: 0;
     }
 
     .star {
@@ -191,6 +199,8 @@
       gap: 15px;
       opacity: 1;
       transition: opacity 2s ease;
+      position: relative;
+      z-index: 50;
     }
 
     .header-top.hidden {
@@ -325,6 +335,8 @@
       flex-wrap: wrap;
       opacity: 1;
       transition: opacity 2s ease;
+      position: relative;
+      z-index: 50;
     }
 
     .main-header.hidden {
@@ -443,6 +455,8 @@
     .video-section {
       margin: 40px 0;
       transition: opacity 2s ease, visibility 2s ease;
+      position: relative;
+      z-index: 50;
     }
 
     .video-section.hidden {
@@ -469,16 +483,48 @@
       max-height: 450px;
     }
 
-    /* ===== КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ ===== */
+    /* ===== СТАРАЯ БУМАГА (ПЯТНА УДАЛЕНЫ) ===== */
+    .paper-background {
+      position: relative;
+      background: #e8d9c0;
+      border-radius: 30px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 50px rgba(100, 50, 20, 0.3);
+      border: 2px solid #6b4b2d;
+      min-height: 500px;
+      z-index: 1;
+    }
+
+    /* Затемнение по краям для эффекта пергамента */
+    .paper-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      box-shadow: inset 0 0 50px rgba(60, 30, 10, 0.3);
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    /* КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ */
     .hidden-content {
       opacity: 0;
       visibility: hidden;
       transition: opacity 2s ease, visibility 2s ease;
+      position: relative;
     }
 
     .hidden-content.visible {
       opacity: 1;
       visibility: visible;
+      animation: paperReveal 2s ease-out forwards;
+    }
+
+    .hidden-content .paper-background {
+      animation: paperReveal 2s ease-out forwards;
     }
 
     .hidden-content .timeline-section,
@@ -487,12 +533,123 @@
     .hidden-content footer {
       animation: fadeInUp 1.5s ease forwards;
       opacity: 0;
+      position: relative;
+      z-index: 10;
     }
 
     .hidden-content.visible .timeline-section { animation-delay: 0.3s; }
     .hidden-content.visible .bio { animation-delay: 0.6s; }
     .hidden-content.visible .info-row { animation-delay: 0.9s; }
     .hidden-content.visible footer { animation-delay: 1.2s; }
+
+    /* Цвета для текста на старой бумаге */
+    .hidden-content .timeline-title {
+      color: #2c1e0e;
+      text-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
+      font-weight: 700;
+    }
+
+    .hidden-content .timeline-content {
+      background: rgba(210, 180, 140, 0.8);
+      border-color: #6b4b2d;
+      color: #1a0e05;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .hidden-content .timeline-year {
+      color: #2c1e0e;
+      font-weight: 700;
+    }
+
+    .hidden-content .timeline-text {
+      color: #1a0e05;
+    }
+
+    .hidden-content .bio {
+      background: rgba(200, 170, 130, 0.7);
+      border-left-color: #6b4b2d;
+    }
+
+    .hidden-content .bio p {
+      color: #1a0e05;
+      font-weight: 500;
+    }
+
+    .hidden-content .coordinates-section {
+      background: rgba(190, 160, 120, 0.7);
+      border-color: #6b4b2d;
+    }
+
+    .hidden-content .coordinates-title {
+      color: #2c1e0e;
+      font-weight: 600;
+    }
+
+    .hidden-content .coord {
+      color: #1a0e05;
+      font-weight: 600;
+    }
+
+    .hidden-content .coord-sep {
+      color: #4a3a2a;
+    }
+
+    .hidden-content .caption-text {
+      color: #2c1e0e;
+      font-weight: 500;
+    }
+
+    .hidden-content .qr-section {
+      background: rgba(180, 150, 110, 0.8);
+      border-color: #6b4b2d;
+    }
+
+    .hidden-content .qr-label {
+      color: #2c1e0e;
+      font-weight: 600;
+    }
+
+    .hidden-content .qr-hint {
+      color: #2c1e0e;
+      font-weight: 500;
+    }
+
+    .hidden-content footer {
+      border-top-color: #6b4b2d;
+    }
+
+    .hidden-content .memorial-message {
+      background: rgba(160, 120, 80, 0.4);
+      border-left-color: #6b4b2d;
+      border-right-color: #6b4b2d;
+    }
+
+    .hidden-content .message-text {
+      color: #2c1e0e;
+      font-weight: 600;
+      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
+    }
+
+    .hidden-content .footer-bottom {
+      color: #2c1e0e;
+      font-weight: 500;
+    }
+
+    .hidden-content .memorial-sign {
+      color: #4a3a2a;
+      font-weight: 600;
+    }
+
+    .hidden-content .coordinates-button {
+      color: #1a0e05;
+      font-weight: 600;
+      background: rgba(140, 100, 60, 0.4);
+      border: 1px solid #6b4b2d;
+    }
+
+    .hidden-content .coordinates-button:hover {
+      background: rgba(160, 120, 80, 0.5);
+    }
 
     /* ХРОНОЛОГИЯ ЖИЗНИ */
     .timeline-section {
@@ -503,11 +660,8 @@
     .timeline-title {
       font-family: 'Playfair Display', serif;
       font-size: 32px;
-      color: #ffd700;
-      text-align: center;
       margin-bottom: 40px;
       letter-spacing: 2px;
-      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
     }
 
     .timeline {
@@ -522,9 +676,9 @@
       transform: translateX(-50%);
       width: 4px;
       height: 100%;
-      background: linear-gradient(to bottom, #ffd700, #c09b5e, #6a5a4a);
+      background: linear-gradient(to bottom, #6b4b2d, #3a2a1a, #1a0e05);
       border-radius: 4px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      box-shadow: 0 0 20px rgba(100, 50, 20, 0.3);
     }
 
     .timeline-item {
@@ -542,33 +696,30 @@
 
     .timeline-content {
       width: 45%;
-      background: rgba(30, 35, 45, 0.7);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       padding: 20px;
       border-radius: 20px;
-      border: 1px solid #c09b5e;
+      border: 1px solid;
       box-shadow: 0 5px 20px rgba(0,0,0,0.3);
       transition: transform 0.3s ease;
     }
 
     .timeline-content:hover {
       transform: scale(1.02);
-      border-color: #ffd700;
-      box-shadow: 0 5px 30px rgba(255, 215, 0, 0.2);
+      border-color: #a07d5a;
+      box-shadow: 0 5px 30px rgba(100, 50, 20, 0.3);
     }
 
     .timeline-year {
       font-family: 'EB Garamond', serif;
       font-size: 28px;
       font-weight: 600;
-      color: #ffd700;
       margin-bottom: 10px;
     }
 
     .timeline-text {
       font-size: 18px;
-      color: #ecf0f5;
       line-height: 1.6;
     }
 
@@ -578,30 +729,27 @@
       transform: translateX(-50%);
       width: 20px;
       height: 20px;
-      background: #ffd700;
-      border: 3px solid #fff;
+      background: #6b4b2d;
+      border: 3px solid #e0c9a5;
       border-radius: 50%;
-      box-shadow: 0 0 20px #ffd700;
+      box-shadow: 0 0 20px #8b6b4d;
       z-index: 10;
     }
 
     /* БИОГРАФИЯ */
     .bio {
       margin: 40px 0;
-      background: rgba(0, 0, 0, 0.2);
       padding: 30px;
       border-radius: 20px;
-      border-left: 3px solid #ffd700;
+      border-left: 3px solid;
       scroll-margin-top: 30px;
     }
 
     .bio p {
       font-size: clamp(16px, 2.2vw, 18px);
-      color: #ecf0f5;
       margin-bottom: 15px;
       text-align: left;
       line-height: 1.8;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
       white-space: pre-line;
       min-height: 200px;
     }
@@ -617,7 +765,6 @@
 
     /* КООРДИНАТЫ */
     .coordinates-section {
-      background: rgba(20, 35, 50, 0.6);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border-radius: 24px;
@@ -625,7 +772,7 @@
       display: flex;
       align-items: center;
       gap: 20px;
-      border: 2px solid #c09b5e;
+      border: 2px solid;
       flex-wrap: wrap;
     }
 
@@ -647,7 +794,6 @@
     .coordinates-title {
       font-family: 'Great Vibes', cursive;
       font-size: 28px;
-      color: #ffd700;
       margin-bottom: 15px;
     }
 
@@ -657,27 +803,23 @@
       border-radius: 50px;
       display: inline-flex;
       margin-bottom: 15px;
-      border: 1px solid #c09b5e;
+      border: 1px solid;
     }
 
     .coord {
       font-family: 'EB Garamond', monospace;
       font-size: 22px;
-      color: #ffffff;
       letter-spacing: 2px;
-      text-shadow: 0 0 10px #ffd700;
     }
 
     .coord-sep {
       font-size: 26px;
-      color: #ffd700;
       margin: 0 8px;
     }
 
     .caption-text {
       font-family: 'Great Vibes', cursive;
       font-size: 24px;
-      color: #e6d5b8;
       margin: 10px 0 15px;
     }
 
@@ -685,31 +827,30 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 215, 0, 0.2);
-      color: #ffd700;
-      text-decoration: none;
       padding: 12px 25px;
       border-radius: 40px;
       font-size: 18px;
-      border: 1px solid #c09b5e;
       transition: all 0.3s ease;
+      font-weight: 600;
     }
 
     .coordinates-button:hover {
-      background: rgba(255, 215, 0, 0.3);
       transform: translateY(-3px);
-      box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+      box-shadow: 0 5px 20px rgba(100, 50, 20, 0.3);
+    }
+
+    .button-icon {
+      font-size: 16px;
     }
 
     /* QR СЕКЦИЯ */
     .qr-section {
-      background: rgba(20, 28, 36, 0.8);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border-radius: 24px;
       padding: 30px;
       text-align: center;
-      border: 2px solid #c09b5e;
+      border: 2px solid;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -719,7 +860,6 @@
     .qr-label {
       font-family: 'Great Vibes', cursive;
       font-size: 28px;
-      color: #ffd700;
       margin-bottom: 20px;
     }
 
@@ -728,7 +868,7 @@
       padding: 10px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      border: 1px solid #c09b5e;
+      border: 1px solid #6b4b2d;
     }
 
     .qr-frame img {
@@ -743,7 +883,6 @@
       margin-top: 15px;
       font-family: 'Cormorant Garamond', serif;
       font-size: 16px;
-      color: #c0d4e8;
       font-style: italic;
     }
 
@@ -751,32 +890,32 @@
     footer {
       margin-top: 50px;
       padding-top: 30px;
-      border-top: 2px solid #c09b5e;
+      border-top: 2px solid;
       scroll-margin-top: 30px;
     }
 
     .memorial-message {
       text-align: center;
       padding: 25px;
-      background: rgba(70, 50, 30, 0.3);
+      background: rgba(160, 120, 80, 0.4);
       border-radius: 20px;
-      border-left: 4px solid #ffd700;
-      border-right: 4px solid #ffd700;
+      border-left: 4px solid #6b4b2d;
+      border-right: 4px solid #6b4b2d;
       margin-bottom: 25px;
+      box-shadow: inset 0 0 20px rgba(100, 50, 20, 0.2);
     }
 
     .message-text {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(26px, 4vw, 32px);
-      color: #ffd700;
       line-height: 1.5;
-      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+      text-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
+      font-weight: 600;
     }
 
     .footer-bottom {
       display: flex;
       justify-content: space-between;
-      color: #b4cce3;
       font-size: 16px;
       font-style: italic;
       flex-wrap: wrap;
@@ -787,7 +926,7 @@
       font-size: 14px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: #c09b5e;
+      font-weight: 600;
     }
 
     /* АДАПТАЦИЯ */
@@ -815,6 +954,7 @@
       .timeline-year { font-size: 22px; }
       .timeline-text { font-size: 16px; }
       .coordinates-section { flex-direction: column; text-align: center; }
+      .paper-background { padding: 15px; }
     }
 
     /* Аудио плеер (скрыт) */
@@ -841,7 +981,7 @@
 
   <div class="wrap">
       
-      <!-- ШАПКА С КНОПКОЙ И СЧЕТЧИКОМ (видна при заходе) -->
+      <!-- ШАПКА С КНОПКОЙ И СЧЕТЧИКОМ -->
       <div class="header-top" id="headerTop">
         <div class="candle-counter" id="candleCounter">
           <span class="counter-icon">🕯️</span>
@@ -855,7 +995,7 @@
         </button>
       </div>
       
-      <!-- ШАПКА С ФОТО (видна при заходе) -->
+      <!-- ШАПКА С ФОТО -->
       <header class="main-header" id="mainHeader">
         <div class="avatar">
           <img id="photo" src="photo.jpg" alt="Фотография Мили Илларионовны">
@@ -873,7 +1013,7 @@
         </div>
       </header>
 
-      <!-- ВИДЕО НА НАЧАЛЬНОЙ СТРАНИЦЕ (видно сразу) -->
+      <!-- ВИДЕО -->
       <section class="video-section" id="videoSection">
         <div class="video-wrapper">
           <video id="videoPlayer" 
@@ -889,132 +1029,136 @@
         </div>
       </section>
 
-      <!-- КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ -->
+      <!-- КОНТЕНТ, КОТОРЫЙ ПОЯВЛЯЕТСЯ ПОСЛЕ ЗАБЕЛИВАНИЯ (СТАРАЯ БУМАГА) -->
       <div class="hidden-content" id="hiddenContent">
         
-        <!-- ХРОНОЛОГИЯ ЖИЗНИ -->
-        <section class="timeline-section" id="timeline">
-          <h2 class="timeline-title">Хронология жизни</h2>
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">1935</div>
-                <div class="timeline-text">Родилась 11 декабря в городе Вологда</div>
+        <!-- КОНТЕЙНЕР СО СТАРОЙ БУМАГОЙ (БЕЗ ПЯТЕН) -->
+        <div class="paper-background">
+          
+          <!-- ХРОНОЛОГИЯ ЖИЗНИ -->
+          <section class="timeline-section" id="timeline">
+            <h2 class="timeline-title">Хронология жизни</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">1935</div>
+                  <div class="timeline-text">Родилась 11 декабря в городе Вологда</div>
+                </div>
               </div>
-            </div>
-            
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">1950-е</div>
-                <div class="timeline-text">Начала трудовую деятельность продавцом</div>
+              
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">1950-е</div>
+                  <div class="timeline-text">Начала трудовую деятельность продавцом</div>
+                </div>
               </div>
-            </div>
-            
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">1960-е</div>
-                <div class="timeline-text">Вышла замуж за Карелина Льва Алексеевича</div>
+              
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">1960-е</div>
+                  <div class="timeline-text">Вышла замуж за Карелина Льва Алексеевича</div>
+                </div>
               </div>
-            </div>
-            
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">1961</div>
-                <div class="timeline-text">Рождение двойняшек — Сергея и Ольги</div>
+              
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">1961</div>
+                  <div class="timeline-text">Рождение двойняшек — Сергея и Ольги</div>
+                </div>
               </div>
-            </div>
-            
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">1973-1991</div>
-                <div class="timeline-text">Работа в горгазе, проверка газового оборудования</div>
+              
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">1973-1991</div>
+                  <div class="timeline-text">Работа в горгазе, проверка газового оборудования</div>
+                </div>
               </div>
-            </div>
-            
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">1981</div>
-                <div class="timeline-text">Овдовела</div>
+              
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">1981</div>
+                  <div class="timeline-text">Овдовела</div>
+                </div>
               </div>
-            </div>
-            
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">2000-е</div>
-                <div class="timeline-text">Работа на рынке после пенсии, помощь семье</div>
+              
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">2000-е</div>
+                  <div class="timeline-text">Работа на рынке после пенсии, помощь семье</div>
+                </div>
               </div>
-            </div>
-            
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <div class="timeline-year">2013</div>
-                <div class="timeline-text">Ушла из жизни 27 марта</div>
+              
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-year">2013</div>
+                  <div class="timeline-text">Ушла из жизни 27 марта</div>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- БИОГРАФИЯ С ПЕЧАТАЮЩИМСЯ ТЕКСТОМ -->
-        <section class="bio" id="bio">
-          <p id="typing-text"></p>
-        </section>
-
-        <!-- КООРДИНАТЫ И QR В ОДНОМ РЯДУ -->
-        <div class="info-row" id="info">
-          <!-- КООРДИНАТЫ МОГИЛЫ -->
-          <section class="coordinates-section"> 
-            <div class="coordinates-icon">🕊️</div>
-            <div class="coordinates-content">
-              <h3 class="coordinates-title">Место упокоения</h3>
-              <div class="coordinates-display">
-                <span class="coord">59.157658</span>
-                <span class="coord-sep">,</span>
-                <span class="coord">39.910106</span>
-              </div>
-              <div class="coordinates-caption">
-                <span class="caption-text">Земля, хранящая тепло рук...</span>
-              </div>
-              <a href="https://yandex.ru/maps/?ll=39.910106,59.157658&z=16&pt=39.910106,59.157658" 
-                 target="_blank" 
-                 class="coordinates-button">
-                <span class="button-icon">🗺️</span>
-                Открыть на карте
-              </a>
             </div>
           </section>
 
-          <!-- QR КОД -->
-          <div class="qr-section">
-            <div class="qr-label">Память всегда с вами</div>
-            <div class="qr-frame"> 
-              <img src="https://github.com/levsergeevich324-prog/mem/raw/main/qr2.png" alt="QR-код страницы памяти">
+          <!-- БИОГРАФИЯ С ПЕЧАТАЮЩИМСЯ ТЕКСТОМ -->
+          <section class="bio" id="bio">
+            <p id="typing-text"></p>
+          </section>
+
+          <!-- КООРДИНАТЫ И QR В ОДНОМ РЯДУ -->
+          <div class="info-row" id="info">
+            <!-- КООРДИНАТЫ МОГИЛЫ -->
+            <section class="coordinates-section"> 
+              <div class="coordinates-icon">🕊️</div>
+              <div class="coordinates-content">
+                <h3 class="coordinates-title">Место упокоения</h3>
+                <div class="coordinates-display">
+                  <span class="coord">59.157658</span>
+                  <span class="coord-sep">,</span>
+                  <span class="coord">39.910106</span>
+                </div>
+                <div class="coordinates-caption">
+                  <span class="caption-text">Земля, хранящая тепло рук...</span>
+                </div>
+                <a href="https://yandex.ru/maps/?ll=39.910106,59.157658&z=16&pt=39.910106,59.157658" 
+                   target="_blank" 
+                   class="coordinates-button">
+                  <span class="button-icon">🗺️</span>
+                  Открыть на карте
+                </a>
+              </div>
+            </section>
+
+            <!-- QR КОД -->
+            <div class="qr-section">
+              <div class="qr-label">Память всегда с вами</div>
+              <div class="qr-frame"> 
+                <img src="https://github.com/levsergeevich324-prog/mem/raw/main/qr2.png" alt="QR-код страницы памяти">
+              </div>
+              <div class="qr-hint">Отсканируйте, чтобы открыть страницу</div>
             </div>
-            <div class="qr-hint">Отсканируйте, чтобы открыть страницу</div>
           </div>
-        </div>
 
-        <!-- ПОДВАЛ С ПАМЯТНЫМИ СЛОВАМИ -->
-        <footer id="footer">
-          <div class="memorial-message">
-            <p class="message-text">"Когда уходят хорошие люди, на небе зажигается новая звезда. Теперь их стало больше, а нам светлее..."</p>
-          </div>
-          <div class="footer-bottom">
-            <span class="memorial-sign">вечная память</span>
-            <span>Страница создана близкими</span>
-          </div>
-        </footer>
-        
-      </div>
+          <!-- ПОДВАЛ С ПАМЯТНЫМИ СЛОВАМИ -->
+          <footer id="footer">
+            <div class="memorial-message">
+              <p class="message-text">"Когда уходят хорошие люди, на небе зажигается новая звезда. Теперь их стало больше, а нам светлее..."</p>
+            </div>
+            <div class="footer-bottom">
+              <span class="memorial-sign">вечная память</span>
+              <span>Страница создана близкими</span>
+            </div>
+          </footer>
+          
+        </div> <!-- Закрытие paper-background -->
+      </div> <!-- Закрытие hidden-content -->
 
-  </div>
+  </div> <!-- Закрытие wrap -->
 
   <script>
     // ===== ГЕНЕРАЦИЯ ЗВЁЗДНОГО НЕБА =====
@@ -1185,6 +1329,7 @@
       const daysCounter = document.getElementById('daysCounter');
       const videoSection = document.getElementById('videoSection');
       const hiddenContent = document.getElementById('hiddenContent');
+      const starsContainer = document.getElementById('stars');
       
       if (!candleButton || !candleEffect || !whiteOverlay || !counterText) {
         console.error('Required elements not found!');
@@ -1237,16 +1382,18 @@
           navigator.vibrate(50);
         }
         
-        // 1. Всё исчезает (кроме звезд), включая видео
+        // 1. Всё исчезает (кроме звезд)
         headerTop.classList.add('hidden');
         mainHeader.classList.add('hidden');
         daysCounter.classList.add('hidden');
-        videoSection.classList.add('hidden'); // Видео тоже исчезает
+        videoSection.classList.add('hidden');
         
         // 2. Забеливание начинается через 3 секунды
         setTimeout(() => {
           console.log('White overlay activated');
           whiteOverlay.classList.add('active');
+          // Звёзды начинают исчезать во время забеливания
+          starsContainer.classList.add('fade-out');
         }, 3000);
         
         // 3. Появление остального контента через 8 секунд
@@ -1255,7 +1402,7 @@
           whiteOverlay.classList.remove('active');
           candleEffect.classList.remove('active');
           
-          // Показываем скрытый контент (видео НЕ появляется)
+          // Показываем скрытый контент
           hiddenContent.classList.add('visible');
           
           // Запускаем печать текста
@@ -1340,7 +1487,7 @@
       setContent();
       createStars();
       updateDaysCounter();
-      setupVideo(); // Запускаем видео
+      setupVideo();
       initCandleFeature();
       initDateAnimation();
       initProtection();
