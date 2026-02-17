@@ -545,43 +545,6 @@
       border-bottom: 2px dashed #c09b5e;
       display: inline-block;
       padding-bottom: 8px;
-      position: relative;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .dates:hover {
-      color: #fff0b5;
-      border-bottom-color: #e6b87e;
-    }
-
-    /* Тултип для даты */
-    .date-tooltip {
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-5px);
-      background: rgba(20, 30, 45, 0.95);
-      color: #ffd700;
-      padding: 8px 16px;
-      border-radius: 24px;
-      font-size: 14px;
-      white-space: nowrap;
-      border: 1px solid #c09b5e;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      pointer-events: none;
-      z-index: 100;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-
-    .dates:hover .date-tooltip {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
     }
 
     /* Счетчик дней */
@@ -1076,6 +1039,15 @@
       text-transform: uppercase;
     }
 
+    /* Стили для видео в хронологии */
+    .timeline-video {
+      width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+      margin-top: 15px;
+      border: 2px solid #d4af37;
+    }
+
     /* АДАПТАЦИЯ */
     @media screen and (max-width: 900px) {
       .timeline::before { left: 30px; }
@@ -1107,21 +1079,6 @@
     #bioAudio {
       display: none;
     }
-    .timeline-inline-img {
-  width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-top: 15px;
-  border: 2px solid #d4af37;
-}
-
-.timeline-video {
-  width: 100%;
-  max-height: 200px;
-  border-radius: 10px;
-  margin-top: 15px;
-}
   </style>
 </head>
 <body>
@@ -1178,7 +1135,6 @@
           <h1 id="name">Карелина Миля Илларионовна</h1>
           <div class="dates" id="dates">
             11.12.1935 - 27.03.2013
-            <span class="date-tooltip" id="dateTooltip">1936 - по паспорту</span>
           </div>
           <div class="days-counter" id="daysCounter">
             <span>Прошло дней с ухода:</span>
@@ -1208,12 +1164,12 @@
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                   <div class="timeline-year">1935</div>
-                  <div class="timeline-text">Родилась 11 декабря в городе Вологда(на фото примерно 13 лет.Рядом стоит сестра Лина,на руках брат Валентин)</div>
-                <!--  короткое видео -->
-  <video class="timeline-video" controls>
-    <source src="13let.mp4" type="video/mp4">
-  </video>
-</div>
+                  <div class="timeline-text">Родилась 11 декабря в городе Вологда (на фото примерно 13 лет. Рядом стоит сестра Лина, на руках брат Валентин)</div>
+                  <!-- короткое видео -->
+                  <video class="timeline-video" controls loop>
+                    <source src="13let.mp4" type="video/mp4">
+                  </video>
+                </div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
@@ -1227,11 +1183,11 @@
                 <div class="timeline-content">
                   <div class="timeline-year">1960-е</div>
                   <div class="timeline-text">Вышла замуж за Карелина Льва Алексеевича</div>
-                   <!-- короткое видео -->
-  <video class="timeline-video" controls>
-    <source src="MilyasMuzhem.mp4" type="video/mp4">
-  </video>
-</div>
+                  <!-- короткое видео -->
+                  <video class="timeline-video" controls loop>
+                    <source src="MilyasMuzhem.mp4" type="video/mp4">
+                  </video>
+                </div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
@@ -1277,7 +1233,7 @@
           </section>
 
           <!-- КООРДИНАТЫ И QR -->
-          <div class="info-row">
+          <div class="info-row" id="info">
             <section class="coordinates-section">
               <div class="coordinates-icon">🕊️</div>
               <div class="coordinates-content">
@@ -1323,7 +1279,6 @@
 
   </div>
 
-  <!--<script src="install-button.js"></script> -->
   <script>
     function createStars() {
       const starsContainer = document.getElementById('stars');
@@ -1406,66 +1361,15 @@
       }
     }
 
-    function stopBiographyAudio() {
-      const audio = document.getElementById('bioAudio');
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
+    // Функция для скролла к хронологии
+    function scrollToTimeline() {
+      const timelineSection = document.getElementById('timeline');
+      if (timelineSection) {
+        timelineSection.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start'
+        });
       }
-    }
-
-    // Функция плавного скролла до самого низа
-    function smoothScrollToBottom() {
-      const documentHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-      
-      window.scrollTo({
-        top: documentHeight,
-        behavior: 'smooth'
-      });
-    }
-
-    // Функция для последовательного скролла
-    function startScrollingSequence() {
-      // Сначала скроллим до хронологии
-      setTimeout(() => {
-        const timelineSection = document.getElementById('timeline');
-        if (timelineSection) {
-          timelineSection.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start'
-          });
-        }
-      }, 2100);
-
-      // Потом до биографии
-      setTimeout(() => {
-        const bioSection = document.getElementById('bio');
-        if (bioSection) {
-          bioSection.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center'
-          });
-        }
-      }, 4200);
-
-      // Потом до координат
-      setTimeout(() => {
-        const infoRow = document.getElementById('info');
-        if (infoRow) {
-          infoRow.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center'
-          });
-        }
-      }, 6300);
-
-      // И наконец до самого низа
-      setTimeout(() => {
-        smoothScrollToBottom();
-      }, 8400);
     }
 
     // Управление звуком
@@ -1540,28 +1444,13 @@
           playBiographyAudio();
           initSoundControl();
           
-          // Запускаем последовательный скролл
-          startScrollingSequence();
+          // Скроллим к хронологии через небольшую задержку
+          setTimeout(() => {
+            scrollToTimeline();
+          }, 1500);
           
         }, 8000);
       });
-    }
-
-    function initDateAnimation() {
-      const dates = document.getElementById('dates');
-      const tooltip = document.getElementById('dateTooltip');
-      const full = "11.12.1935 - 27.03.2013";
-      const alt = "11.12.1936 - 27.03.2013";
-      let showAlt = false;
-      
-      setInterval(() => {
-        dates.style.opacity = '0.7';
-        setTimeout(() => {
-          dates.innerHTML = showAlt ? full + '<span class="date-tooltip">1936 - по паспорту</span>' : alt + '<span class="date-tooltip">1935 - настоящий год рождения</span>';
-          dates.style.opacity = '1';
-          showAlt = !showAlt;
-        }, 300);
-      }, 3000);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -1570,7 +1459,6 @@
       updateDaysCounter();
       setupVideo();
       initCandleFeature();
-      initDateAnimation();
       setInterval(updateDaysCounter, 86400000);
     });
 
@@ -1578,30 +1466,31 @@
       clearTimeout(window.resizeTimer);
       window.resizeTimer = setTimeout(createStars, 200);
     });
-      // Защита от клика правой кнопкой мыши
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    alert('❌ Копирование материалов сайта запрещено');
-  });
-  
-  // Защита от клавиш копирования (Ctrl+C, Ctrl+U и т.д.)
-  document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a')) {
+    
+    // Защита от клика правой кнопкой мыши
+    document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
-      alert('❌ Этот сайт защищен от копирования');
-    }
-    if (e.key === 'F12') {
-      e.preventDefault();
-      alert('❌ Инструменты разработчика отключены');
-    }
-  });
-  
-  // Дополнительная защита от открытия DevTools
-  setInterval(function() {
-    if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
-      document.body.innerHTML = '<h1>❌ Доступ запрещен</h1><p>Закройте инструменты разработчика</p>';
-    }
-  }, 1000);
+      alert('❌ Копирование материалов сайта запрещено');
+    });
+    
+    // Защита от клавиш копирования (Ctrl+C, Ctrl+U и т.д.)
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a')) {
+        e.preventDefault();
+        alert('❌ Этот сайт защищен от копирования');
+      }
+      if (e.key === 'F12') {
+        e.preventDefault();
+        alert('❌ Инструменты разработчика отключены');
+      }
+    });
+    
+    // Дополнительная защита от открытия DevTools
+    setInterval(function() {
+      if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+        document.body.innerHTML = '<h1>❌ Доступ запрещен</h1><p>Закройте инструменты разработчика</p>';
+      }
+    }, 1000);
   </script>
 </body>
 </html>
