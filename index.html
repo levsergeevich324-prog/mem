@@ -1287,7 +1287,7 @@
           <!-- ПОДВАЛ -->
           <footer id="footer">
             <div class="memorial-message">
-              <p class="message-text">"Когда уходят хорошие люди, на небе зажигается новая звезда. Теперь их стало больше, а нам светлее..."</p>
+              <p class="message-text">"Когда уходят хорошие люди, на небе зажигается новая звезда. Теперь их стало больше, а нам светлее"</p>
             </div>
             <div class="footer-bottom">
               <span class="memorial-sign">вечная память</span>
@@ -1300,7 +1300,7 @@
 
   </div>
 
-  <script src="install-button.js"></script>
+  <!--<script src="install-button.js"></script> -->
   <script>
     function createStars() {
       const starsContainer = document.getElementById('stars');
@@ -1555,6 +1555,30 @@
       clearTimeout(window.resizeTimer);
       window.resizeTimer = setTimeout(createStars, 200);
     });
+      // Защита от клика правой кнопкой мыши
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    alert('❌ Копирование материалов сайта запрещено');
+  });
+  
+  // Защита от клавиш копирования (Ctrl+C, Ctrl+U и т.д.)
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a')) {
+      e.preventDefault();
+      alert('❌ Этот сайт защищен от копирования');
+    }
+    if (e.key === 'F12') {
+      e.preventDefault();
+      alert('❌ Инструменты разработчика отключены');
+    }
+  });
+  
+  // Дополнительная защита от открытия DevTools
+  setInterval(function() {
+    if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+      document.body.innerHTML = '<h1>❌ Доступ запрещен</h1><p>Закройте инструменты разработчика</p>';
+    }
+  }, 1000);
   </script>
 </body>
 </html>
