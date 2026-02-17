@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
   <title>Карелина Миля Илларионовна - память</title>
   
-  <!-- PWA Meta tags -->
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#ffb347">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Память о Миле">
-  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
-  
   <!-- Подключение шрифтов Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -293,6 +285,66 @@
       .install-content {
         flex-direction: column;
         gap: 10px;
+      }
+    }
+
+    /* ===== КНОПКА ОТКЛЮЧЕНИЯ ЗВУКА ===== */
+    .sound-control {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+      background: linear-gradient(135deg, #2c1810, #4a2a1a);
+      backdrop-filter: blur(10px);
+      border: 2px solid #ffb347;
+      border-radius: 60px;
+      padding: 12px 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(255, 180, 70, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: fadeIn 1s ease;
+    }
+
+    .sound-control:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(255, 180, 70, 0.5);
+    }
+
+    .sound-control.muted {
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      border-color: #888;
+    }
+
+    .sound-icon {
+      font-size: 24px;
+    }
+
+    .sound-text {
+      color: #ffb347;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .sound-control.muted .sound-text {
+      color: #888;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media screen and (max-width: 768px) {
+      .sound-control {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+      }
+      .sound-text {
+        font-size: 14px;
       }
     }
 
@@ -1077,8 +1129,14 @@
     </div>
   </div>
   
+  <!-- КНОПКА УПРАВЛЕНИЯ ЗВУКОМ -->
+  <div class="sound-control" id="soundControl" style="display: none;">
+    <span class="sound-icon" id="soundIcon">🔊</span>
+    <span class="sound-text" id="soundText">Выключить звук</span>
+  </div>
+  
   <!-- Аудио -->
-  <audio id="bioAudio" preload="auto">
+  <audio id="bioAudio" preload="auto" loop>
     <source src="https://github.com/levsergeevich324-prog/mem/raw/main/voice.mp3" type="audio/mpeg">
   </audio>
 
@@ -1227,7 +1285,7 @@
           </div>
 
           <!-- ПОДВАЛ -->
-          <footer>
+          <footer id="footer">
             <div class="memorial-message">
               <p class="message-text">"Когда уходят хорошие люди, на небе зажигается новая звезда. Теперь их стало больше, а нам светлее..."</p>
             </div>
@@ -1320,8 +1378,98 @@
       const audio = document.getElementById('bioAudio');
       if (audio) {
         audio.currentTime = 0;
+        audio.loop = true;
         audio.play().catch(e => console.log('Audio play failed'));
       }
+    }
+
+    function stopBiographyAudio() {
+      const audio = document.getElementById('bioAudio');
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    }
+
+    // Функция плавного скролла до самого низа
+    function smoothScrollToBottom() {
+      const documentHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+      
+      window.scrollTo({
+        top: documentHeight,
+        behavior: 'smooth'
+      });
+    }
+
+    // Функция для последовательного скролла
+    function startScrollingSequence() {
+      // Сначала скроллим до хронологии
+      setTimeout(() => {
+        const timelineSection = document.getElementById('timeline');
+        if (timelineSection) {
+          timelineSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }
+      }, 2100);
+
+      // Потом до биографии
+      setTimeout(() => {
+        const bioSection = document.getElementById('bio');
+        if (bioSection) {
+          bioSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center'
+          });
+        }
+      }, 4200);
+
+      // Потом до координат
+      setTimeout(() => {
+        const infoRow = document.getElementById('info');
+        if (infoRow) {
+          infoRow.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center'
+          });
+        }
+      }, 6300);
+
+      // И наконец до самого низа
+      setTimeout(() => {
+        smoothScrollToBottom();
+      }, 8400);
+    }
+
+    // Управление звуком
+    function initSoundControl() {
+      const soundControl = document.getElementById('soundControl');
+      const soundIcon = document.getElementById('soundIcon');
+      const soundText = document.getElementById('soundText');
+      const audio = document.getElementById('bioAudio');
+      
+      let isMuted = false;
+      
+      soundControl.addEventListener('click', function() {
+        if (isMuted) {
+          // Включаем звук
+          audio.muted = false;
+          soundIcon.textContent = '🔊';
+          soundText.textContent = 'Выключить звук';
+          soundControl.classList.remove('muted');
+        } else {
+          // Выключаем звук
+          audio.muted = true;
+          soundIcon.textContent = '🔇';
+          soundText.textContent = 'Включить звук';
+          soundControl.classList.add('muted');
+        }
+        isMuted = !isMuted;
+      });
     }
 
     function initCandleFeature() {
@@ -1335,6 +1483,7 @@
       const video = document.getElementById('videoSection');
       const hidden = document.getElementById('hiddenContent');
       const stars = document.getElementById('stars');
+      const soundControl = document.getElementById('soundControl');
       
       let count = localStorage.getItem('candleCount') ? parseInt(localStorage.getItem('candleCount')) : 0;
       counter.textContent = count;
@@ -1360,8 +1509,17 @@
           overlay.classList.remove('active');
           effect.classList.remove('active');
           hidden.classList.add('visible');
+          
+          // Показываем кнопку управления звуком
+          soundControl.style.display = 'flex';
+          
           typeWriter();
           playBiographyAudio();
+          initSoundControl();
+          
+          // Запускаем последовательный скролл
+          startScrollingSequence();
+          
         }, 8000);
       });
     }
